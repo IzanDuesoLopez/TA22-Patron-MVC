@@ -98,7 +98,7 @@ public class View extends JFrame{
 		getContentPane().add(btnBuscarCliente);
 		
 		textPane = new JTextPane();
-		textPane.setBounds(10, 173, 331, 375);
+		textPane.setBounds(10, 176, 331, 421);
 		getContentPane().add(textPane);
 	}
 }
