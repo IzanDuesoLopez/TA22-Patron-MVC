@@ -38,11 +38,25 @@ public class View_tables extends JFrame{
 	public JTextField nomApels_scientist;
 	public JButton createScientist;
 	
+	// Left panel for create Projects
+	public JPanel createProjectsPanel;
+	public JTextField id_projects;
+	public JTextField nombre_projects;
+	public JTextField horas_projects;
+	public JButton createProject;
+	
 	// Left panel for edit scientists
 	public JPanel editScientistsPanel;
 	public JTextField dni_scientist_edit;
 	public JTextField nomApels_scientist_edit;
 	public JButton editScientist;
+	
+	// Left panel for edit Projects
+	public JPanel editProjectsPanel;
+	public JTextField id_projects_edit;
+	public JTextField nombre_projects_edit;
+	public JTextField horas_projects_edit;
+	public JButton btnEditProject;
 	
 	// Right panel Projects
 	public JButton btnCreateProjects;
@@ -128,57 +142,84 @@ public class View_tables extends JFrame{
 		
 		showScientistsPanelTop.setVisible(false);
 		
-		// Left panel for button 'Show' for projects
-//		model = new DefaultTableModel();
-//
-//		showProjectsPanelTop = new JPanel();
-//		showProjectsPanelTop.setBorder(new LineBorder(new Color(0, 0, 0)));
-//		showProjectsPanelTop.setBounds(10, 11, 700, 527);
-//		contentPane.add(showProjectsPanelTop);
-//		showProjectsPanelTop.setLayout(null);
-//
-//		showProjectsPanel = new JScrollPane();
-//		showProjectsPanel.setBounds(10, 78, 680, 438);
-//		showProjectsPanelTop.add(showProjectsPanel);
-//		table = new JTable(model);
-//		showProjectsPanel.setViewportView(table);
-//
-//		showProjectsPanel.setVisible(false);
 		
-// ---- Left panel for button 'Create' for scientists
+// ---- Left panel for button 'Create' for Projects
+		createProjectsPanel = new JPanel();
+		createProjectsPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		createProjectsPanel.setBounds(10, 11, 700, 527);
+		contentPane.add(createProjectsPanel);
+		createProjectsPanel.setLayout(null);
+		
+		// id project
+		JLabel id_project_label = new JLabel("ID");
+		id_project_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		id_project_label.setBounds(100, 50, 80, 25);
+		createProjectsPanel.add(id_project_label);
+		
+		id_projects = new JTextField();
+		id_projects.setBounds(180, 50, 150, 25);
+		id_projects.setEditable(true);
+		createProjectsPanel.add(id_projects);
+		
+		// Nombre projects
+		JLabel name_project = new JLabel("Nombre");
+		name_project.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		name_project.setBounds(100, 90, 80, 25);
+		createProjectsPanel.add(name_project);
+		
+		nombre_projects = new JTextField();
+		nombre_projects.setBounds(180, 90, 150, 25);
+		createProjectsPanel.add(nombre_projects);
+		
+		// Horas projects
+		JLabel horas_project = new JLabel("Horas");
+		horas_project.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		horas_project.setBounds(100, 130, 80, 25);
+		createProjectsPanel.add(horas_project);
+
+		horas_projects = new JTextField();
+		horas_projects.setBounds(180, 130, 150, 25);
+		createProjectsPanel.add(horas_projects);
+		
+		// Accept button for create
+		createProject = new JButton("Aceptar");
+		createProject.setBounds(300, 200, 80, 25);
+		createProjectsPanel.add(createProject);
+		
+// ---- Left panel for button 'Create' for Scientists
 		createScientistsPanel = new JPanel();
 		createScientistsPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		createScientistsPanel.setBounds(10, 11, 700, 527);
 		contentPane.add(createScientistsPanel);
 		createScientistsPanel.setLayout(null);
-		
+
 		// DNI
 		JLabel id_scientist_label = new JLabel("DNI");
 		id_scientist_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		id_scientist_label.setBounds(100, 50, 80, 25);
 		createScientistsPanel.add(id_scientist_label);
-		
+
 		dni_scientist = new JTextField();
 		dni_scientist.setBounds(180, 50, 150, 25);
 		dni_scientist.setEditable(true);
 		createScientistsPanel.add(dni_scientist);
-		
+
 		// nomApels
 		JLabel name_scientist_label = new JLabel("Nombre");
 		name_scientist_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		name_scientist_label.setBounds(100, 90, 80, 25);
 		createScientistsPanel.add(name_scientist_label);
-		
+
 		nomApels_scientist = new JTextField();
 		nomApels_scientist.setBounds(180, 90, 150, 25);
 		createScientistsPanel.add(nomApels_scientist);
-		
+
 		// Accept button for create
 		createScientist = new JButton("Aceptar");
 		createScientist.setBounds(300, 200, 80, 25);
 		createScientistsPanel.add(createScientist);
 				
-		// ---- Left panel for button 'Edit' for customers
+		// ---- Left panel for button 'Edit' for Scientists
 		editScientistsPanel = new JPanel();
 		editScientistsPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		editScientistsPanel.setBounds(10, 11, 700, 527);
@@ -186,7 +227,7 @@ public class View_tables extends JFrame{
 		editScientistsPanel.setLayout(null);
 		
 		// DNI
-		JLabel dni_scientist_label_edit = new JLabel("ID");
+		JLabel dni_scientist_label_edit = new JLabel("DNI");
 		dni_scientist_label_edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		dni_scientist_label_edit.setBounds(100, 50, 80, 25);
 		editScientistsPanel.add(dni_scientist_label_edit);
@@ -210,5 +251,48 @@ public class View_tables extends JFrame{
 		editScientist = new JButton("Aceptar");
 		editScientist.setBounds(300, 200, 80, 25);
 		editScientistsPanel.add(editScientist);
+		
+// ---- Left panel for button 'Edit' for Projects
+		editProjectsPanel = new JPanel();
+		editProjectsPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		editProjectsPanel.setBounds(10, 11, 700, 527);
+		contentPane.add(editProjectsPanel);
+		editProjectsPanel.setLayout(null);
+
+		// ID
+		JLabel id_project_label_edit = new JLabel("ID");
+		id_project_label_edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		id_project_label_edit.setBounds(100, 50, 80, 25);
+		editProjectsPanel.add(id_project_label_edit);
+
+		id_projects_edit = new JTextField();
+		id_projects_edit.setBounds(180, 50, 150, 25);
+		id_projects_edit.setEditable(true);
+		editProjectsPanel.add(id_projects_edit);
+
+		// Nombre
+		JLabel nombre_projects_label_edit = new JLabel("Nombre");
+		nombre_projects_label_edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		nombre_projects_label_edit.setBounds(100, 90, 80, 25);
+		editProjectsPanel.add(nombre_projects_label_edit);
+
+		nombre_projects_edit = new JTextField();
+		nombre_projects_edit.setBounds(180, 90, 150, 25);
+		editProjectsPanel.add(nombre_projects_edit);
+		
+		// Horas
+		JLabel horas_projects_label_edit = new JLabel("Horas");
+		horas_projects_label_edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		horas_projects_label_edit.setBounds(100, 130, 80, 25);
+		editProjectsPanel.add(horas_projects_label_edit);
+
+		horas_projects_edit = new JTextField();
+		horas_projects_edit.setBounds(180, 130, 150, 25);
+		editProjectsPanel.add(horas_projects_edit);
+
+		// Accept button for create
+		btnEditProject = new JButton("ACCEPT");
+		btnEditProject.setBounds(300, 200, 80, 25);
+		editProjectsPanel.add(btnEditProject);
 	}
 }
