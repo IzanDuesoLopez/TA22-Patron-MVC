@@ -2,104 +2,135 @@ package models;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
-import views.View;
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
 
 public class Model {
 
-	private static Connection connect;
-	private int id;
-	private String nombre;
-	private String apellido;
-	private String direccion;
-	private String dni;
-	private String fecha;
-	
+	private static Connection con;
+	private final String user = "local";
+	private final String pass = "Local123@";
+	private final String ip = "jdbc:mysql://192.168.1.138:3306/C4_UD22_01";
+
 	public Model() {
 
 	}
 
-	// Method for connecting to the database
-	public static void connectMySql() {
+	/**
+	 * Creates a connection
+	 */
+	public void connection() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver"); // We use the driver
-			connect = DriverManager.getConnection("jdbc:mysql://192.168.1.138:3306?useTimezone=true&serverTimezone=UTC", "local", "Local123@"); // We connect to our fedora server
-			System.out.println("> You've been connected to the server <"); // We print that we've been connected
-		} catch (Exception ex) { // If some code returns error
-			System.out.println("> Can't connect to database <");
-			System.out.println(ex);
-		}
-	}
-
-	// Method for closing the connection
-	public static void closeConnection() {
-		try {
-			connect.close(); // We close the connection
-			System.out.println("> Connection ended <");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection(ip, user, pass);
 		} catch (SQLException e) {
-			Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, e);
+			JOptionPane.showMessageDialog(null, e, "ERROR MESSAGE", 0);
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			System.out.println("Error charging the Driver for MySQL connection.");
+			System.out.println("Message: " + e.getMessage() + "Cause: " + e.getCause());
 		}
 	}
-	
-	// Method to insert data on table
-	public static void insertSql(String database, String queryCreateTable) {
-		// We use a try to proceed with connection, use the database, and insert the data
+
+	/**
+	 * Closes a connection
+	 */
+	public void closeConnection() {
+
 		try {
-			connectMySql(); // We connect to MySQL
-			// We use the table
-			String querydatabase = "use " + database + ";";
-			java.sql.Statement stdatabase = connect.createStatement();
-			stdatabase.executeUpdate(querydatabase);
-
-			// Query SQL
-			java.sql.Statement st = connect.createStatement();
-			st.executeUpdate(queryCreateTable);
-			JOptionPane.showMessageDialog(null, "¡Operación realizada con éxito!");
-
-			closeConnection();
-			// We do a catch in case an error exists
-		} catch (SQLException ex) {
-			System.out.println(ex.getMessage());
-			JOptionPane.showMessageDialog(null, "¡Error ejecutando la operación!");
+			con.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e, "ERROR MESSAGE", 0);
 		}
 	}
-	
-	// Method that get mysql values
-		public void getValues(String database_name, String table, String nombre, String apellido, View view) {
-			try {
-				connectMySql();
-				String query_use = "use " + database_name + ";";
-				java.sql.Statement st_use_database = connect.createStatement();
-				st_use_database.executeUpdate(query_use);
-				
-				String result = "select * from " + table + " where nombre='" + nombre + "' and apellido='" + apellido + "';";
-				java.sql.Statement st_select = connect.createStatement();
-				java.sql.ResultSet registers = st_select.executeQuery(result);
-				
-				System.out.println("\n"+table);
-				// We print table registers, controlling the number of attributes that every register has
-				view.textPane.setText(table+"\n");
-				while(registers.next()) {
-					view.textPane.setText(view.textPane.getText() + "ID: " + registers.getString("id") + 
-											"\nNombre: " + registers.getString("nombre") + 
-											"\nApellido: " + registers.getString("apellido") + 
-											"\nDirección: " + registers.getString("direccion") + 
-											"\nNIF/NIE: " + registers.getString("dni") + 
-											"\nFecha de nacimiento: " + registers.getString("fecha"));
-					//System.out.println(registers.getString("id") + " " + registers.getString("nombre"));
-				}
-				System.out.println("\n");
-				
-				closeConnection();
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-				System.out.println("The data retrieve failed");
-			}
-		}
 
+	/**
+	 * Method that runs querys
+	 * @param query
+	 */
+	public void executeQuery(String query) {
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(query);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * We get column data
+	 * @param tableName
+	 * @return
+	 */
+	public String[] getColumns(String tableName) {
+		try {
+			Statement st = con.createStatement();
+			ResultSet results = st.executeQuery("SELECT * FROM " + tableName + ";");
+			ResultSetMetaData metadata = (ResultSetMetaData) results.getMetaData();
+			int columnCount = metadata.getColumnCount();
+			String[] columnNames = new String[columnCount];
+
+			for (int i = 1; i <= columnCount; i++) {
+				columnNames[i - 1] = metadata.getColumnName(i);
+			}
+			return columnNames;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * We get table data from String parameter
+	 * @param tableName
+	 * @return
+	 */
+	public String[][] getData(String tableName) {
+		try {
+			Statement st0 = con.createStatement();
+			ResultSet results0 = st0.executeQuery("SELECT * FROM " + tableName + ";");
+			ResultSetMetaData metadata = (ResultSetMetaData) results0.getMetaData();
+			int columnCount = metadata.getColumnCount();
+
+			Statement st = con.createStatement();
+			ResultSet results = st.executeQuery("SELECT * FROM " + tableName + ";");
+
+			int count = 0;
+			while (results.next()) {
+				count++;
+			}
+
+			Statement st1 = con.createStatement();
+			ResultSet results1 = st1.executeQuery("SELECT * FROM " + tableName + ";");
+
+			String[][] data = new String[count][columnCount];
+
+			int cont = 0;
+
+			while (results1.next()) {
+				data[cont][0] = String.valueOf(results1.getInt("id"));
+				data[cont][1] = results1.getString("nombre");
+				data[cont][2] = results1.getString("apellido");
+				data[cont][3] = results1.getString("direccion");
+				data[cont][4] = String.valueOf(results1.getInt("dni"));
+				Date date = results1.getDate("fecha");
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				data[cont][5] = dateFormat.format(date);
+				cont++;
+			}
+			return data;
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
 }

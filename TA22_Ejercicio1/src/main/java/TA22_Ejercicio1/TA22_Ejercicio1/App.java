@@ -4,16 +4,13 @@ import controllers.Controller;
 import models.Model;
 import views.View;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
-    {    
+    {   
+    	// We create view and model, the controller gets the objects instances
+    	View view = new View();
     	Model model = new Model();
-        View view = new View();
         Controller controller = new Controller(model, view);
         controller.startView();
     }

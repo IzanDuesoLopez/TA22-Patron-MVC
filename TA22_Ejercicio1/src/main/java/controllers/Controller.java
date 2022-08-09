@@ -1,172 +1,179 @@
 package controllers;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.InputMismatchException;
+import java.awt.event.*;
+import java.sql.Connection;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
-import models.Model;
-import views.View;
+import models.*;
+import views.*;
 
-public class Controller implements ActionListener{
-
+public class Controller implements ActionListener {
 	
 	private Model model;
 	private View view;
-	private String nombre;
-	private String apellido;
-	private String direccion;
-	private int dni;
-	private String fecha;
 	
+	/**
+	 * Constructor with actionListener for components
+	 * @param model
+	 * @param view
+	 */
 	public Controller(Model model, View view) {
 		this.model = model;
 		this.view = view;
-		this.view.btnEnviarForm.addActionListener(this);
-		this.view.btnVistaBuscar.addActionListener(this);
-		this.view.btnVistaCrear.addActionListener(this);
-		this.view.btnBuscarCliente.addActionListener(this);
-		this.view.btnVistaBorrarCliente.addActionListener(this);
-		this.view.btnBorrarCliente.addActionListener(this);
+		this.view.showCustomers.addActionListener(this);
+		this.view.createCustomers.addActionListener(this);
+		this.view.createCustomer.addActionListener(this);
+		this.view.editCustomerForm.addActionListener(this);
+		this.view.editCustomer.addActionListener(this);
+		this.view.deleteCustomer.addActionListener(this);
 	}
 	
+	/**
+	 * We start the view
+	 */
 	public void startView() {
-		view.setTitle("Formulario");
-		view.pack();
-		view.setBounds(100, 100, 693, 656);
+		view.setTitle("C4_UD22_01");
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		view.setLocationRelativeTo(null);
 		view.setVisible(true);
-		view.btnBuscarCliente.setVisible(false);
-		view.btnBorrarCliente.setVisible(false);
-		view.textPane.setVisible(false);
 	}
 	
+	/**
+	 *  On action performed, when we click buttons
+	 */
 	public void actionPerformed(ActionEvent e) {
-		if(view.btnEnviarForm == e.getSource()) {
-			crearUsuario();
-		} else if (view.btnVistaBuscar == e.getSource()) {
-			changeViewFormatBtnBuscar();
-		} else if (view.btnVistaCrear == e.getSource()) {
-			changeViewFormatCrear();
-		} else if (view.btnBuscarCliente == e.getSource()) {
-			botonBuscarCliente();
-		} else if (view.btnVistaBorrarCliente == e.getSource()) {
-			changeViewFormatBtnBorrar();
-		} else if (view.btnBorrarCliente == e.getSource()) {
-			botonEliminarCliente();
+		if (view.showCustomers == e.getSource()) {
+			showCustomers();
+		} else if (view.createCustomers == e.getSource()) {
+			createCustomersForm();
+		} else if (view.createCustomer == e.getSource()) {
+			createCustomer();
+			showCustomers();
+		} else if (view.editCustomerForm == e.getSource()) {
+			editCustomersForm();
+		} else if (view.editCustomer == e.getSource()) {
+			editCustomer();
+			showCustomers();
+		} else if (view.deleteCustomer == e.getSource()) {
+			deleteCustomer();
+			showCustomers();
 		}
 	}
 	
-	public void botonEliminarCliente() {
+	/**
+	 *  Show customers table
+	 */
+	public void showCustomers() {
+		view.createCustomersPanel.setVisible(false);
+		view.editCustomersPanel.setVisible(false);
+		view.showCustomersPanelTop.setVisible(true);
+		view.model = new DefaultTableModel();
+		view.table = new JTable(view.model);
+		view.showCustomersPanel.setViewportView(view.table);
+		
+		model.connection();
+		
+		// Customers columns
+		String[] colu = model.getColumns("clientes");
+		for (int i = 0; i < colu.length; i++) {
+			view.model.addColumn(colu[i]);
+		};
+		
+		// Customers data
+		String[][] rows = model.getData("clientes");
+		
+		for (int i = 0; i < rows.length; i++) {
+			Object[] row = new Object[] {rows[i][0], rows[i][1], rows[i][2], rows[i][3], rows[i][4], rows[i][5]};
+			view.model.addRow(row);
+		}
+		
+		model.closeConnection();
+	}
+	
+	// Create customers form
+	public void createCustomersForm() {
+		view.editCustomersPanel.setVisible(false);
+		view.showCustomersPanelTop.setVisible(false);
+		view.createCustomersPanel.setVisible(true);
+	}
+	
+	// Create customer
+	public void createCustomer() {
+		model.connection();
+		
+		String name = view.name_customer.getText();
+		String surname = view.surname_customer.getText();
+		String address = view.address_customer.getText();
+		String dni = view.dni_customer.getText();
+		String date = view.date_customer.getText();
+		
+		String query = "insert into clientes(nombre, apellido, direccion, dni, fecha) values ('" + name + "', '" + surname + "', '" + address + "', " + dni + ", '" + date + "');";
+		
+		model.executeQuery(query);
+		model.closeConnection();
+	}
+	
+	// Edit customer form
+	public void editCustomersForm() {
 		try {
-			this.nombre = view.textFieldNombre.getText();
-			this.apellido = view.textFieldApellido.getText();
-			boolean nombreValido = nombre.matches("[a-zA-Z]+");
-			boolean apellidoValido = nombre.matches("[a-zA-Z]+");
-
-			if (nombreValido && apellidoValido) {
-				String query = "delete from cliente where nombre='" + nombre + "' and apellido='" + apellido + "';";
-				model.insertSql("C4_UD22_01", query);
-			}
-
-		} catch (Exception e2) {
-			JOptionPane.showMessageDialog(view, "Ha surgido un error!");
-			System.out.println(e2.getMessage());
+			int row = view.table.getSelectedRow();
+			String id = view.table.getModel().getValueAt(row, 0).toString();
+			String name = view.table.getModel().getValueAt(row, 1).toString();
+			String surname = view.table.getModel().getValueAt(row, 2).toString();
+			String address = view.table.getModel().getValueAt(row, 3).toString();
+			String dni = view.table.getModel().getValueAt(row, 4).toString();
+			String date = view.table.getModel().getValueAt(row, 5).toString();
+			
+			view.showCustomersPanelTop.setVisible(false);
+			view.createCustomersPanel.setVisible(false);
+			view.editCustomersPanel.setVisible(true);
+			
+			view.id_customer_edit.setText(id);
+			view.name_customer_edit.setText(name);
+			view.surname_customer_edit.setText(surname);
+			view.address_customer_edit.setText(address);
+			view.dni_customer_edit.setText(dni);
+			view.date_customer_edit.setText(date);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			JOptionPane.showMessageDialog(view, "¡Must select a customer to edit it!");
+			showCustomers(); // We show customers to app user
+			System.out.println("Error: " + e.getMessage());
 		}
 	}
 	
-	public void botonBuscarCliente() {
+	// Edit customer
+	public void editCustomer() {
+			model.connection();
+			
+			String id = view.id_customer_edit.getText();
+			String name = view.name_customer_edit.getText();
+			String surname = view.surname_customer_edit.getText();
+			String address = view.address_customer_edit.getText();
+			String dni = view.dni_customer_edit.getText();
+			String date = view.date_customer_edit.getText();
+			
+			String query = "update clientes set nombre='" + name + "', apellido='" + surname + "', direccion='" + address + "', dni=" + dni + ", fecha='" + date + "' where id=" + id + ";";
+			
+			model.executeQuery(query);
+			model.closeConnection();
+	}
+	
+	// Delete customer
+	public void deleteCustomer() {
 		try {
-			this.nombre = view.textFieldNombre.getText();
-			this.apellido = view.textFieldApellido.getText();
-			boolean nombreValido = nombre.matches("[a-zA-Z]+");
-			boolean apellidoValido = nombre.matches("[a-zA-Z]+");
-
-			if (nombreValido && apellidoValido) {
-				model.connectMySql();
-				model.getValues("C4_UD22_01", "cliente", nombre, apellido, view);
-				model.closeConnection();
-			}
-
-		} catch (Exception e2) {
-			JOptionPane.showMessageDialog(view, "Ha surgido un error!");
-			System.out.println(e2.getMessage());
+			int row = view.table.getSelectedRow();
+			String id = view.table.getModel().getValueAt(row, 0).toString();
+			
+			model.connection();
+			
+			String query = "delete from clientes where id = " + id + ";";
+			
+			model.executeQuery(query);
+			model.closeConnection();
+		} catch (ArrayIndexOutOfBoundsException e) {
+			JOptionPane.showMessageDialog(view, "¡Must select a customer to delete it!");
+			System.out.println("Error: " + e.getMessage());
 		}
-	}
-	
-	public void crearUsuario() {
-		try {
-			this.nombre = view.textFieldNombre.getText();
-			this.apellido = view.textFieldApellido.getText();
-			this.direccion = view.textFieldDireccion.getText();
-			this.dni = Integer.parseInt(view.textFieldDni.getText());
-			this.fecha = view.textFieldFecha.getText();
-			boolean nombreValido = nombre.matches("[a-zA-Z]+");
-			boolean apellidoValido = nombre.matches("[a-zA-Z]+");
-
-			if (nombreValido && apellidoValido) {
-				String query = "insert into cliente(nombre, apellido, direccion, dni, fecha) values ('" + nombre
-						+ "', '" + apellido + "', '" + direccion + "', " + dni + ", '" + fecha + "')";
-				model.insertSql("C4_UD22_01", query);
-			}
-
-		} catch (Exception e2) {
-			JOptionPane.showMessageDialog(view, "Ha surgido un error!");
-			System.out.println(e2.getMessage());
-		}
-	}
-	
-	public void changeViewFormatBtnBorrar() {
-		view.lblDireccion.setVisible(false);
-		view.lblDni.setVisible(false);
-		view.lblFecha.setVisible(false);
-		
-		view.textFieldDireccion.setVisible(false);
-		view.textFieldDni.setVisible(false);
-		view.textFieldFecha.setVisible(false);
-		
-		view.btnEnviarForm.setVisible(false);
-		view.btnVistaCrear.setVisible(true);
-		view.btnBorrarCliente.setVisible(true);
-		view.textPane.setVisible(true);
-		
-		view.btnBuscarCliente.setVisible(false);
-	}
-	
-	public void changeViewFormatBtnBuscar() {
-		view.lblDireccion.setVisible(false);
-		view.lblDni.setVisible(false);
-		view.lblFecha.setVisible(false);
-		
-		view.textFieldDireccion.setVisible(false);
-		view.textFieldDni.setVisible(false);
-		view.textFieldFecha.setVisible(false);
-		
-		view.btnEnviarForm.setVisible(false);
-		view.btnVistaCrear.setVisible(true);
-		view.btnBuscarCliente.setVisible(true);
-		
-		view.textPane.setVisible(true);
-		
-		view.btnBorrarCliente.setVisible(false);
-	}
-	
-	public void changeViewFormatCrear() {
-		view.lblDireccion.setVisible(true);
-		view.lblDni.setVisible(true);
-		view.lblFecha.setVisible(true);
-		
-		view.textFieldDireccion.setVisible(true);
-		view.textFieldDni.setVisible(true);
-		view.textFieldFecha.setVisible(true);
-		
-		view.btnEnviarForm.setVisible(true);
-		view.btnBuscarCliente.setVisible(false);
-		view.textPane.setVisible(false);
-		
-		view.btnBorrarCliente.setVisible(false);
 	}
 }
