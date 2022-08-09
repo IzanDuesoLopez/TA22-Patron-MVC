@@ -2,10 +2,14 @@ package views;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
+import javax.swing.JTable;
 
 public class View extends JFrame{
 	public JTextField textFieldNombre;
@@ -23,6 +27,8 @@ public class View extends JFrame{
 	public JButton btnVistaCrear;
 	public JButton btnBuscarCliente;
 	public JTextPane textPane;
+	public JButton btnBorrarCliente;
+	public JButton btnVistaBorrarCliente;
 	
 	public View() {
 		getContentPane().setLayout(null);
@@ -100,5 +106,20 @@ public class View extends JFrame{
 		textPane = new JTextPane();
 		textPane.setBounds(10, 176, 331, 421);
 		getContentPane().add(textPane);
+		
+		btnBorrarCliente = new JButton("Eliminar");
+		btnBorrarCliente.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+		btnBorrarCliente.setBounds(30, 125, 167, 40);
+		getContentPane().add(btnBorrarCliente);
+		
+		btnVistaBorrarCliente = new JButton("Borrar cliente");
+		btnVistaBorrarCliente.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
+		btnVistaBorrarCliente.setBounds(440, 110, 167, 40);
+		getContentPane().add(btnVistaBorrarCliente);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(428, 11, 189, 150);
+		getContentPane().add(lblNewLabel);
+		lblNewLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 }
