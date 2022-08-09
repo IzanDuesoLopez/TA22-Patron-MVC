@@ -24,10 +24,14 @@ public class View_tables extends JFrame{
 	public JPanel contentPane;
 	
 	// Right panel
-	public JButton createCustomers;
 	public JButton showCustomers;
+	public JButton createCustomers;
 	public JButton editCustomerForm;
 	public JButton deleteCustomer;
+	public JButton showVideos;
+	public JButton createVideos;
+	public JButton editVideos;
+	public JButton deleteVideos;
 	
 	// Left panel for show customers
 	public JPanel showCustomersPanelTop;
@@ -54,6 +58,22 @@ public class View_tables extends JFrame{
 	public JTextField dni_customer_edit;
 	public JTextField date_customer_edit;
 	public JButton editCustomer;
+	
+	// Left panel for create customers
+	public JPanel createVideosPanel;
+	public JTextField id_video;
+	public JTextField title_video;
+	public JTextField director_video;
+	public JTextField cli_id_video;
+	public JButton createVideo;
+	
+	// Left panel for edit customers
+	public JPanel editVideosPanel;
+	public JTextField id_video_edit;
+	public JTextField title_video_edit;
+	public JTextField director_video_edit;
+	public JTextField cli_id_video_edit;
+	public JButton editVideo;
 	
 	public View_tables() {
 		
@@ -95,7 +115,7 @@ public class View_tables extends JFrame{
 		panelAdmin.add(deleteCustomer);
 		
 		// Videos
-		JButton createVideos = new JButton("Create");
+		createVideos = new JButton("Create");
 		createVideos.setBounds(54, 259, 89, 23);
 		panelAdmin.add(createVideos);
 		
@@ -104,9 +124,17 @@ public class View_tables extends JFrame{
 		lblVideos.setBounds(10, 200, 89, 23);
 		panelAdmin.add(lblVideos);
 		
-		JButton showVideos = new JButton("Show");
+		showVideos = new JButton("Show");
 		showVideos.setBounds(54, 228, 89, 23);
 		panelAdmin.add(showVideos);
+		
+		editVideos = new JButton("Edit");
+		editVideos.setBounds(54, 290, 89, 23);
+		panelAdmin.add(editVideos);
+		
+		deleteVideos = new JButton("Delete");
+		deleteVideos.setBounds(54, 321, 89, 23);
+		panelAdmin.add(deleteVideos);
 		
 // ---- Left panel for button 'Show' for customers
 		model = new DefaultTableModel();
@@ -271,5 +299,110 @@ public class View_tables extends JFrame{
 		editCustomer.setBounds(300, 200, 80, 25);
 		editCustomersPanel.add(editCustomer);
 		
+// ---- Left panel for button 'Create' for videos
+		createVideosPanel = new JPanel();
+		createVideosPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		createVideosPanel.setBounds(10, 11, 700, 527);
+		contentPane.add(createVideosPanel);
+		createVideosPanel.setLayout(null);
+		
+		// ID
+		JLabel id_video_label = new JLabel("ID");
+		id_video_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		id_video_label.setBounds(100, 50, 80, 25);
+		createVideosPanel.add(id_video_label);
+		
+		id_video = new JTextField();
+		id_video.setBounds(180, 50, 150, 25);
+		id_video.setEditable(false);
+		createVideosPanel.add(id_video);
+		
+		// Title
+		JLabel title_video_label = new JLabel("Title");
+		title_video_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		title_video_label.setBounds(100, 90, 80, 25);
+		createVideosPanel.add(title_video_label);
+		
+		title_video = new JTextField();
+		title_video.setBounds(180, 90, 150, 25);
+		createVideosPanel.add(title_video);
+		
+		// Director
+		JLabel director_video_label = new JLabel("Director");
+		director_video_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		director_video_label.setBounds(100, 130, 80, 25);
+		createVideosPanel.add(director_video_label);
+		
+		director_video = new JTextField();
+		director_video.setBounds(180, 130, 150, 25);
+		createVideosPanel.add(director_video);
+		
+		// cli_id
+		JLabel cli_id_video_label = new JLabel("cli_id");
+		cli_id_video_label.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cli_id_video_label.setBounds(100, 170, 80, 25);
+		createVideosPanel.add(cli_id_video_label);
+		
+		cli_id_video = new JTextField();
+		cli_id_video.setBounds(180, 170, 150, 25);
+		createVideosPanel.add(cli_id_video);
+		
+		// Accept button for create
+		createVideo = new JButton("Aceptar");
+		createVideo.setBounds(300, 220, 80, 25);
+		createVideosPanel.add(createVideo);
+		
+// ---- Left panel for button 'Edit' for videos
+		editVideosPanel = new JPanel();
+		editVideosPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		editVideosPanel.setBounds(10, 11, 700, 527);
+		contentPane.add(editVideosPanel);
+		editVideosPanel.setLayout(null);
+		
+		// ID
+		JLabel id_video_label_edit = new JLabel("ID");
+		id_video_label_edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		id_video_label_edit.setBounds(100, 50, 80, 25);
+		editVideosPanel.add(id_video_label_edit);
+		
+		id_video_edit = new JTextField();
+		id_video_edit.setBounds(180, 50, 150, 25);
+		id_video_edit.setEditable(false);
+		editVideosPanel.add(id_video_edit);
+		
+		// Title
+		JLabel title_video_label_edit = new JLabel("Title");
+		title_video_label_edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		title_video_label_edit.setBounds(100, 90, 80, 25);
+		editVideosPanel.add(title_video_label_edit);
+		
+		title_video_edit = new JTextField();
+		title_video_edit.setBounds(180, 90, 150, 25);
+		editVideosPanel.add(title_video_edit);
+		
+		// Director
+		JLabel director_video_label_edit = new JLabel("Director");
+		director_video_label_edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		director_video_label_edit.setBounds(100, 130, 80, 25);
+		editVideosPanel.add(director_video_label_edit);
+		
+		director_video_edit = new JTextField();
+		director_video_edit.setBounds(180, 130, 150, 25);
+		editVideosPanel.add(director_video_edit);
+		
+		// cli_id
+		JLabel cli_id_video_label_edit = new JLabel("cli_id");
+		cli_id_video_label_edit.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cli_id_video_label_edit.setBounds(100, 170, 80, 25);
+		editVideosPanel.add(cli_id_video_label_edit);
+		
+		cli_id_video_edit = new JTextField();
+		cli_id_video_edit.setBounds(180, 170, 150, 25);
+		editVideosPanel.add(cli_id_video_edit);
+		
+		// Accept button for create
+		editVideo = new JButton("Aceptar");
+		editVideo.setBounds(300, 220, 80, 25);
+		editVideosPanel.add(editVideo);
 	}
 }

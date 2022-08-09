@@ -106,22 +106,35 @@ public class Model_DB {
 			Statement st1 = con.createStatement();
 			ResultSet results1 = st1.executeQuery("SELECT * FROM " + tableName + ";");
 			
-			String[][] data = new String[count][columnCount+2];
+			String[][] data = new String[count][columnCount];
 			
 			int cont = 0;
-			while(results1.next()) {
-				data[cont][0] = String.valueOf(results1.getInt("id"));
-				data[cont][1] = results1.getString("nombre");
-				data[cont][2] = results1.getString("apellido");
-				data[cont][3] = results1.getString("direccion");
-				data[cont][4] = String.valueOf(results1.getInt("dni"));
-				Date date = results1.getDate("fecha");
-				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
-				data[cont][5] = dateFormat.format(date);
-				cont++;
+			if(tableName.equals("clientes")) {
+				while(results1.next()) {
+					data[cont][0] = String.valueOf(results1.getInt("id"));
+					data[cont][1] = results1.getString("nombre");
+					data[cont][2] = results1.getString("apellido");
+					data[cont][3] = results1.getString("direccion");
+					data[cont][4] = String.valueOf(results1.getInt("dni"));
+					Date date = results1.getDate("fecha");
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+					data[cont][5] = dateFormat.format(date);
+					cont++;
+				}
+				return data;
+				
+			} else if(tableName.equals("videos")) {
+				while(results1.next()) {
+					data[cont][0] = String.valueOf(results1.getInt("id"));
+					data[cont][1] = results1.getString("title");
+					data[cont][2] = results1.getString("director");
+					data[cont][3] = String.valueOf(results1.getInt("cli_id"));
+					cont++;
+				}
+				return data;
 			}
 			
-			return data;
+			
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
