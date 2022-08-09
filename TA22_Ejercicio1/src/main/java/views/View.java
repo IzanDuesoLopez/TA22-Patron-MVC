@@ -2,6 +2,7 @@ package views;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,6 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 
 public class View extends JFrame{
@@ -25,10 +27,11 @@ public class View extends JFrame{
 	public JButton btnEnviarForm;
 	public JButton btnVistaBuscar;
 	public JButton btnVistaCrear;
-	public JButton btnBuscarCliente;
 	public JTextPane textPane;
 	public JButton btnBorrarCliente;
-	public JButton btnVistaBorrarCliente;
+	public JTable tablaUsuarios;
+	public JScrollPane scrollTabla;
+	public DefaultTableModel modeloTabla;
 	
 	public View() {
 		getContentPane().setLayout(null);
@@ -90,35 +93,25 @@ public class View extends JFrame{
 		
 		btnVistaBuscar = new JButton("Buscar cliente");
 		btnVistaBuscar.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		btnVistaBuscar.setBounds(440, 24, 167, 40);
+		btnVistaBuscar.setBounds(504, 24, 167, 40);
 		getContentPane().add(btnVistaBuscar);
 		
 		btnVistaCrear = new JButton("Crear cliente");
 		btnVistaCrear.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		btnVistaCrear.setBounds(440, 68, 167, 40);
+		btnVistaCrear.setBounds(504, 68, 167, 40);
 		getContentPane().add(btnVistaCrear);
-		
-		btnBuscarCliente = new JButton("Buscar");
-		btnBuscarCliente.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		btnBuscarCliente.setBounds(30, 125, 167, 40);
-		getContentPane().add(btnBuscarCliente);
 		
 		textPane = new JTextPane();
 		textPane.setBounds(10, 176, 331, 421);
 		getContentPane().add(textPane);
 		
-		btnBorrarCliente = new JButton("Eliminar");
+		btnBorrarCliente = new JButton("Borrar cliente");
 		btnBorrarCliente.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		btnBorrarCliente.setBounds(30, 125, 167, 40);
+		btnBorrarCliente.setBounds(504, 111, 167, 40);
 		getContentPane().add(btnBorrarCliente);
 		
-		btnVistaBorrarCliente = new JButton("Borrar cliente");
-		btnVistaBorrarCliente.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 18));
-		btnVistaBorrarCliente.setBounds(440, 110, 167, 40);
-		getContentPane().add(btnVistaBorrarCliente);
-		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(428, 11, 189, 150);
+		lblNewLabel.setBounds(492, 11, 189, 150);
 		getContentPane().add(lblNewLabel);
 		lblNewLabel.setBorder(BorderFactory.createLineBorder(Color.black));
 	}

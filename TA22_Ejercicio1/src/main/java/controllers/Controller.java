@@ -27,20 +27,16 @@ public class Controller implements ActionListener{
 		this.view.btnEnviarForm.addActionListener(this);
 		this.view.btnVistaBuscar.addActionListener(this);
 		this.view.btnVistaCrear.addActionListener(this);
-		this.view.btnBuscarCliente.addActionListener(this);
-		this.view.btnVistaBorrarCliente.addActionListener(this);
 		this.view.btnBorrarCliente.addActionListener(this);
 	}
 	
 	public void startView() {
 		view.setTitle("Formulario");
 		view.pack();
-		view.setBounds(100, 100, 693, 656);
+		view.setBounds(100, 100, 750, 750);
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setLocationRelativeTo(null);
 		view.setVisible(true);
-		view.btnBuscarCliente.setVisible(false);
-		view.btnBorrarCliente.setVisible(false);
 		view.textPane.setVisible(false);
 	}
 	
@@ -51,10 +47,6 @@ public class Controller implements ActionListener{
 			changeViewFormatBtnBuscar();
 		} else if (view.btnVistaCrear == e.getSource()) {
 			changeViewFormatCrear();
-		} else if (view.btnBuscarCliente == e.getSource()) {
-			botonBuscarCliente();
-		} else if (view.btnVistaBorrarCliente == e.getSource()) {
-			changeViewFormatBtnBorrar();
 		} else if (view.btnBorrarCliente == e.getSource()) {
 			botonEliminarCliente();
 		}
@@ -62,16 +54,12 @@ public class Controller implements ActionListener{
 	
 	public void botonEliminarCliente() {
 		try {
-			this.nombre = view.textFieldNombre.getText();
-			this.apellido = view.textFieldApellido.getText();
-			boolean nombreValido = nombre.matches("[a-zA-Z]+");
-			boolean apellidoValido = nombre.matches("[a-zA-Z]+");
-
-			if (nombreValido && apellidoValido) {
-				String query = "delete from cliente where nombre='" + nombre + "' and apellido='" + apellido + "';";
-				model.insertSql("C4_UD22_01", query);
-			}
-
+			int fil = view.tablaUsuarios.getSelectedRow();
+			System.out.println(fil);
+			String id = view.tablaUsuarios.getModel().getValueAt(fil, 0).toString();
+			String query = "delete from cliente where id=" + id + ";";
+			model.insertSql("C4_UD22_01", query);
+			botonBuscarCliente();
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(view, "Ha surgido un error!");
 			System.out.println(e2.getMessage());
@@ -80,17 +68,9 @@ public class Controller implements ActionListener{
 	
 	public void botonBuscarCliente() {
 		try {
-			this.nombre = view.textFieldNombre.getText();
-			this.apellido = view.textFieldApellido.getText();
-			boolean nombreValido = nombre.matches("[a-zA-Z]+");
-			boolean apellidoValido = nombre.matches("[a-zA-Z]+");
-
-			if (nombreValido && apellidoValido) {
-				model.connectMySql();
-				model.getValues("C4_UD22_01", "cliente", nombre, apellido, view);
-				model.closeConnection();
-			}
-
+			model.connectMySql();
+			model.getValues("C4_UD22_01", "cliente", view);
+			model.closeConnection();
 		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(view, "Ha surgido un error!");
 			System.out.println(e2.getMessage());
@@ -119,24 +99,19 @@ public class Controller implements ActionListener{
 		}
 	}
 	
-	public void changeViewFormatBtnBorrar() {
-		view.lblDireccion.setVisible(false);
-		view.lblDni.setVisible(false);
-		view.lblFecha.setVisible(false);
-		
-		view.textFieldDireccion.setVisible(false);
-		view.textFieldDni.setVisible(false);
-		view.textFieldFecha.setVisible(false);
-		
-		view.btnEnviarForm.setVisible(false);
-		view.btnVistaCrear.setVisible(true);
-		view.btnBorrarCliente.setVisible(true);
-		view.textPane.setVisible(true);
-		
-		view.btnBuscarCliente.setVisible(false);
-	}
-	
 	public void changeViewFormatBtnBuscar() {
+		botonBuscarCliente();
+		
+		if(view.tablaUsuarios != null) {
+			view.tablaUsuarios.setVisible(true);
+		}
+		
+		view.lblNombre.setVisible(false);
+		view.textFieldNombre.setVisible(false);
+		view.lblApellido.setVisible(false);
+		view.textFieldApellido.setVisible(false);
+		
+		view.textPane.setVisible(false);
 		view.lblDireccion.setVisible(false);
 		view.lblDni.setVisible(false);
 		view.lblFecha.setVisible(false);
@@ -147,14 +122,18 @@ public class Controller implements ActionListener{
 		
 		view.btnEnviarForm.setVisible(false);
 		view.btnVistaCrear.setVisible(true);
-		view.btnBuscarCliente.setVisible(true);
-		
-		view.textPane.setVisible(true);
-		
-		view.btnBorrarCliente.setVisible(false);
 	}
 	
 	public void changeViewFormatCrear() {
+		view.tablaUsuarios.setVisible(false);
+		view.scrollTabla.setVisible(false);
+		
+		view.lblNombre.setVisible(true);
+		view.textFieldNombre.setVisible(true);
+		view.lblApellido.setVisible(true);
+		view.textFieldApellido.setVisible(true);
+		
+		view.tablaUsuarios.setVisible(false);
 		view.lblDireccion.setVisible(true);
 		view.lblDni.setVisible(true);
 		view.lblFecha.setVisible(true);
@@ -164,9 +143,6 @@ public class Controller implements ActionListener{
 		view.textFieldFecha.setVisible(true);
 		
 		view.btnEnviarForm.setVisible(true);
-		view.btnBuscarCliente.setVisible(false);
 		view.textPane.setVisible(false);
-		
-		view.btnBorrarCliente.setVisible(false);
 	}
 }

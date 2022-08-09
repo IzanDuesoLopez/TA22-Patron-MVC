@@ -7,6 +7,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import views.View;
 
@@ -70,28 +73,38 @@ public class Model {
 	}
 	
 	// Method that get mysql values
-		public void getValues(String database_name, String table, String nombre, String apellido, View view) {
+		public void getValues(String database_name, String table, View view) {
 			try {
+				int contador = 0;
 				connectMySql();
 				String query_use = "use " + database_name + ";";
 				java.sql.Statement st_use_database = connect.createStatement();
 				st_use_database.executeUpdate(query_use);
 				
-				String result = "select * from " + table + " where nombre='" + nombre + "' and apellido='" + apellido + "';";
+				String result = "select * from " + table + ";";
 				java.sql.Statement st_select = connect.createStatement();
 				java.sql.ResultSet registers = st_select.executeQuery(result);
 				
 				System.out.println("\n"+table);
 				// We print table registers, controlling the number of attributes that every register has
 				view.textPane.setText(table+"\n");
+				view.modeloTabla = new DefaultTableModel();
+				view.scrollTabla = new JScrollPane();
+				view.scrollTabla.setBounds(10, 176, 607, 421);
+				view.tablaUsuarios = new JTable(view.modeloTabla);
+				view.tablaUsuarios.setBounds(10, 20, 460, 680);
+				view.modeloTabla.addColumn("ID");
+				view.modeloTabla.addColumn("Nombre");
+				view.modeloTabla.addColumn("Apellido");
+				view.modeloTabla.addColumn("Dirección");
+				view.modeloTabla.addColumn("NIF/NIE");
+				view.modeloTabla.addColumn("Fecha");
+				view.getContentPane().add(view.tablaUsuarios);
+				
 				while(registers.next()) {
-					view.textPane.setText(view.textPane.getText() + "ID: " + registers.getString("id") + 
-											"\nNombre: " + registers.getString("nombre") + 
-											"\nApellido: " + registers.getString("apellido") + 
-											"\nDirección: " + registers.getString("direccion") + 
-											"\nNIF/NIE: " + registers.getString("dni") + 
-											"\nFecha de nacimiento: " + registers.getString("fecha"));
-					//System.out.println(registers.getString("id") + " " + registers.getString("nombre"));
+					view.modeloTabla.insertRow(view.modeloTabla.getRowCount(), new Object[] { registers.getString("id"),
+							registers.getString("nombre"), registers.getString("apellido"), registers.getString("direccion"),
+							registers.getString("dni"), registers.getString("fecha")});
 				}
 				System.out.println("\n");
 				
