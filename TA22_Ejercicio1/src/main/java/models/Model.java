@@ -56,16 +56,16 @@ public class Model {
 			java.sql.Statement stdatabase = connect.createStatement();
 			stdatabase.executeUpdate(querydatabase);
 
-			// Insert the data
+			// Query SQL
 			java.sql.Statement st = connect.createStatement();
 			st.executeUpdate(queryCreateTable);
-			System.out.println("The data has been inserted");
+			JOptionPane.showMessageDialog(null, "¡Operación realizada con éxito!");
 
 			closeConnection();
 			// We do a catch in case an error exists
 		} catch (SQLException ex) {
 			System.out.println(ex.getMessage());
-			System.out.println("Error creando tabla");
+			JOptionPane.showMessageDialog(null, "¡Error ejecutando la operación!");
 		}
 	}
 	
