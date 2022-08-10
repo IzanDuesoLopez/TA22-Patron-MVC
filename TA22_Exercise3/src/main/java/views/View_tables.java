@@ -63,6 +63,12 @@ public class View_tables extends JFrame{
 	public JButton btnEditProjectsForm;
 	public JButton btnDeleteProjects;
 	public JButton btnShowProjects;
+	
+	// Right panel Asignados
+	public JButton btnShowAsignados;
+	public JButton btnCreateAsignados;
+	public JButton btnEditAsignadosForm;
+	public JButton btnDeleteAsignados;
 
 	
 	public View_tables() {
@@ -124,6 +130,28 @@ public class View_tables extends JFrame{
 		btnDeleteProjects = new JButton("Delete");
 		btnDeleteProjects.setBounds(54, 283, 89, 23);
 		panelAdmin.add(btnDeleteProjects);
+		
+// -----Right panel asignados
+		JLabel lblAsignados = new JLabel("Asignados");
+		lblAsignados.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblAsignados.setBounds(10, 312, 89, 23);
+		panelAdmin.add(lblAsignados);
+		
+		btnShowAsignados = new JButton("Show");
+		btnShowAsignados.setBounds(54, 336, 89, 23);
+		panelAdmin.add(btnShowAsignados);
+		
+		btnCreateAsignados = new JButton("Create");
+		btnCreateAsignados.setBounds(54, 363, 89, 23);
+		panelAdmin.add(btnCreateAsignados);
+		
+		btnEditAsignadosForm = new JButton("Edit");
+		btnEditAsignadosForm.setBounds(54, 390, 89, 23);
+		panelAdmin.add(btnEditAsignadosForm);
+		
+		btnDeleteAsignados = new JButton("Delete");
+		btnDeleteAsignados.setBounds(54, 418, 89, 23);
+		panelAdmin.add(btnDeleteAsignados);
 		
 // ---- Left panel for button 'Show' for scientists
 		model = new DefaultTableModel();

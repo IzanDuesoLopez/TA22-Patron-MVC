@@ -123,6 +123,14 @@ public class Model_DB {
 					cont++;
 				}
 				return data;
+			} else if (tableName.equals("asignados_a")) {
+				while(results1.next()) {
+					data[cont][0] = results1.getString("idAuto");
+					data[cont][1] = results1.getString("cientifico");
+					data[cont][2] = results1.getString("proyecto");
+					cont++;
+				}
+				return data;
 			}
 			
 		} catch (SQLException e) {

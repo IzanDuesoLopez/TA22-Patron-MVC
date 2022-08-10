@@ -30,6 +30,7 @@ public class Controller_CRUD implements ActionListener {
 		this.view.btnEditProjectsForm.addActionListener(this);
 		this.view.btnEditProject.addActionListener(this);
 		this.view.btnDeleteProjects.addActionListener(this);
+		this.view.btnShowAsignados.addActionListener(this);
 	}
 	
 	public void startView() {
@@ -69,7 +70,39 @@ public class Controller_CRUD implements ActionListener {
 		} else if (view.btnDeleteProjects == e.getSource()) {
 			deleteProject();
 			showProjects();
+		} else if (view.btnShowAsignados == e.getSource()) {
+			showAsignados();
 		}
+	}
+	
+	public void showAsignados() {
+		view.createScientistsPanel.setVisible(false);
+		view.editScientistsPanel.setVisible(false);
+		view.createScientistsPanel.setVisible(false);
+		view.showScientistsPanelTop.setVisible(true);
+		
+		view.model = new DefaultTableModel();
+		view.table = new JTable(view.model);
+		view.showScientistsPanel.setViewportView(view.table);
+		
+		model.connection();
+		
+		// Columns
+		String[] colu = model.getColumns("asignados_a");
+		for (int i = 0; i < colu.length; i++) {
+			view.model.addColumn(colu[i]);
+		}
+
+		// Data
+		String[][] rows = model.getData("asignados_a");
+
+		for (int i = 0; i < rows.length; i++) {
+
+			Object[] row = new Object[] { rows[i][0], rows[i][1], rows[i][2]};
+			view.model.addRow(row);
+		}
+		
+		model.closeConnection();
 	}
 	
 	public void showProjects() {
