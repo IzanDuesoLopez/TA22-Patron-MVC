@@ -66,8 +66,6 @@ public class View_tables extends JFrame{
 	
 	// Right panel Asignados
 	public JButton btnShowAsignados;
-	public JButton btnCreateAsignados;
-	public JButton btnEditAsignadosForm;
 	public JButton btnDeleteAsignados;
 
 	
@@ -141,16 +139,8 @@ public class View_tables extends JFrame{
 		btnShowAsignados.setBounds(54, 336, 89, 23);
 		panelAdmin.add(btnShowAsignados);
 		
-		btnCreateAsignados = new JButton("Create");
-		btnCreateAsignados.setBounds(54, 363, 89, 23);
-		panelAdmin.add(btnCreateAsignados);
-		
-		btnEditAsignadosForm = new JButton("Edit");
-		btnEditAsignadosForm.setBounds(54, 390, 89, 23);
-		panelAdmin.add(btnEditAsignadosForm);
-		
 		btnDeleteAsignados = new JButton("Delete");
-		btnDeleteAsignados.setBounds(54, 418, 89, 23);
+		btnDeleteAsignados.setBounds(54, 361, 89, 23);
 		panelAdmin.add(btnDeleteAsignados);
 		
 // ---- Left panel for button 'Show' for scientists

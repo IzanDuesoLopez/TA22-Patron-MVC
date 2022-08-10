@@ -31,6 +31,7 @@ public class Controller_CRUD implements ActionListener {
 		this.view.btnEditProject.addActionListener(this);
 		this.view.btnDeleteProjects.addActionListener(this);
 		this.view.btnShowAsignados.addActionListener(this);
+		this.view.btnDeleteAsignados.addActionListener(this);
 	}
 	
 	public void startView() {
@@ -71,6 +72,9 @@ public class Controller_CRUD implements ActionListener {
 			deleteProject();
 			showProjects();
 		} else if (view.btnShowAsignados == e.getSource()) {
+			showAsignados();
+		} else if (view.btnDeleteAsignados == e.getSource()) {
+			deleteAsignados();
 			showAsignados();
 		}
 	}
@@ -288,6 +292,19 @@ public class Controller_CRUD implements ActionListener {
 		model.connection();
 		
 		String query = "delete from proyectos where id = '" + id + "';";
+		
+		model.executeQuery(query);
+		model.closeConnection();
+	}
+	
+	public void deleteAsignados() {
+		int row = view.table.getSelectedRow();
+		String id = view.table.getModel().getValueAt(row, 0).toString();
+		int idFinal = Integer.parseInt(id);
+		
+		model.connection();
+		
+		String query = "delete from asignados_a where idAuto = '" + idFinal + "';";
 		
 		model.executeQuery(query);
 		model.closeConnection();
